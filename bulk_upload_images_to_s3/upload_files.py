@@ -18,21 +18,17 @@ def get_files_list():
 
     for file in files:
         if file.lower().endswith(('.png', '.jpg', '.jpeg')):
-            send_file_again = False
-
             logging.info(f"Tried to upload file: {file}")
 
             if(setup_boto.upload_file_to_s3(client, file)):
                 successful.append(file)
             else:
-                send_file_again = True
-
-            if (send_file_again):
                 if(setup_boto.upload_file_to_s3(client, file)):
                     logging.info(f"Tried to upload again file: {file}")
                     successful.append(file)
                 else:
                     errors.append(file)
+
 
     return successful, errors
 
